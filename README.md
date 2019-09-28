@@ -11,3 +11,5 @@ Minimalistic emacs config
 [Bailey Ling](https://github.com/bling/dotemacs/tree/master/config)
 
 [Phil Hagelberg](https://github.com/technomancy/dotfiles/tree/master/.emacs.d)
+
+[Ben Chin](https://github.com/redguardtoo/emacs.d#evil-mode-tutorial)
