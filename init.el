@@ -185,8 +185,7 @@
   :config
   (projectile-mode t)
   (setq projectile-cache-file (expand-file-name  "projectile.cache" savefile-dir))
-  :bind
-  ("C-c p" . projectile-command-map))
+  :bind ("C-c p" . projectile-command-map))
 
 ;; allows to easily try new packages installing/uninstall automatically
 (use-package try
@@ -218,7 +217,7 @@
 
 (use-package highlight-indent-guides
   :ensure t
-  :init
+  :config
   (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
   (setq highlight-indent-guides-method 'column))
 
