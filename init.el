@@ -170,8 +170,7 @@
 
 (use-package magit
   :ensure t
-  :bind ("C-x g" . magit-status)
-  :config (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh))
+  :bind ("C-x g" . magit-status))
 
 ;; LaTeX
 (use-package tex
