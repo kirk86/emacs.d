@@ -161,6 +161,13 @@
 ;; windmove enables moving between windows with S - <-/->
 (windmove-default-keybindings)
 
+;; automatically save buffers associated with files on buffer switch
+;; and on windows switch
+;; (require 'super-save)
+;; ;; add integration with ace-window
+;; (add-to-list 'super-save-triggers 'ace-window)
+;; (super-save-mode +1)
+
 (defadvice set-buffer-major-mode (after set-major-mode activate compile)
   "Set buffer major mode according to `auto-mode-alist'."
   (let* ((name (buffer-name buffer))
@@ -190,15 +197,31 @@
 (setq ispell-program-name "aspell" ; use aspell instead of ispell
       ispell-extra-args '("--sug-mode=ultra"))
 
+(defcustom my-flyspell t
+  "Non-nil values enable Prelude's flyspell support."
+  :type 'boolean
+  :group 'editor)
+
 (defun my-enable-flyspell ()
   "Enable command `flyspell-mode' if `prelude-flyspell' is not nil."
   (when (and my-flyspell (executable-find ispell-program-name))
     (flyspell-mode +1)))
 
+(defcustom my-clean-whitespace-on-save t
+    "Cleanup whitespace from file before it's saved.
+Will only occur if `prelude-whitespace' is also enabled."
+    :type 'boolean
+    :group 'editor)
+
 (defun my-cleanup-maybe ()
   "Invoke `whitespace-cleanup' if `prelude-clean-whitespace-on-save' is not nil."
   (when my-clean-whitespace-on-save
     (whitespace-cleanup)))
+
+(defcustom my-whitespace t
+  "Non-nil values enable Prelude's whitespace visualization."
+  :type 'boolean
+  :group 'editor)
 
 (defun my-enable-whitespace ()
   "Enable `whitespace-mode' if `prelude-whitespace' is not nil."
@@ -277,11 +300,28 @@
 (with-region-or-buffer indent-region)
 (with-region-or-buffer untabify)
 
+(defcustom my-yank-indent-threshold 1000
+  "Threshold (# chars) over which indentation does not automatically occur."
+  :type 'number
+  :group 'editor)
+
 ;; automatically indenting yanked text if in programming-modes
 (defun yank-advised-indent-function (beg end)
   "Do indentation, as long as the region isn't too large."
   (if (<= (- end beg) my-yank-indent-threshold)
       (indent-region beg end nil)))
+
+(defcustom my-indent-sensitive-modes
+  '(conf-mode coffee-mode haml-mode python-mode slim-mode yaml-mode)
+  "Modes for which auto-indenting is suppressed."
+  :type 'list
+  :group 'editor)
+
+(defcustom my-yank-indent-modes '(LaTeX-mode TeX-mode)
+    "Modes in which to indent regions that are yanked (or yank-popped).
+Only modes that don't derive from `prog-mode' should be listed here."
+    :type 'list
+    :group 'editor)
 
 (defmacro advise-commands (advice-name commands class &rest body)
     "Apply advice named ADVICE-NAME to multiple COMMANDS.

@@ -218,8 +218,8 @@
 (use-package highlight-indent-guides
   :ensure t
   :config
-  (setq highlight-indent-guides-method 'column)
-  (add-hook 'prog-mode-hook 'highlight-indent-guides-mode))
+  (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
+  (setq highlight-indent-guides-method 'column))
 
 ;; (use-package elpy
 ;;   :ensure t

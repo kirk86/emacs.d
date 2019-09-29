@@ -9,7 +9,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (highlight-indent-guides pyvenv multiple-cursors hungry-delete undo-tree company exec-path-from-shell flycheck yasnippet-snippets yasnippet s projectile use-package zenburn-theme fill-column-indicator expand-region magit try))))
+    (auctex highlight-indent-guides pyvenv multiple-cursors hungry-delete undo-tree company exec-path-from-shell flycheck yasnippet-snippets yasnippet s projectile use-package zenburn-theme fill-column-indicator expand-region magit try))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
