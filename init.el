@@ -209,11 +209,10 @@
 (use-package s
   :ensure t)
 
-;; (use-package pyvenv
+(use-package pyvenv
   :ensure t)
 
-
-another change here
+;; another change here
 
 ;; brings ivy as dependency
 ;; (use-package find-file-in-project
