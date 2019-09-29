@@ -23,7 +23,7 @@
 (defvar config-dir (expand-file-name "config" emacs-dir)
   "Personal configuration dir.")
 (defvar bin-dir (expand-file-name "bin" emacs-dir)
-  "This directory houses packages that are not yet available in ELPA (or MELPA).")
+  "This directory houses 3rd party software.")
 (defvar savefile-dir (expand-file-name "savefile" emacs-dir)
   "This folder stores all the automatically generated save/history-files.")
 
@@ -63,6 +63,9 @@
   (mapc 'load (directory-files config-dir 't "^[^#\.].*\\.el$")))
 
 ;; (require 'global-keybindings)
+
+(when (eq system-type 'darwin)
+  (setq ns-function-modifier 'hyper))  ;; I'ts all in the Meta
 
 ;; setup package archives
 (require 'package)
@@ -147,6 +150,7 @@
   :ensure t
   :config
   (global-undo-tree-mode))
+  ;; (diminish 'undo-tree-mode)))  ;; sensible undo-tree
 
 ;; deletes all the whitespace when you hit backspace or delete
 (use-package hungry-delete
@@ -175,10 +179,11 @@
 ;;   (interactive)
 ;;   (tex-send-command "evince" (tex-append tex-print-file ".pdf")))
 
-
 (use-package projectile
   :ensure t
-  :config (projectile-mode t)
+  :config
+  (projectile-mode t)
+  (setq projectile-cache-file (expand-file-name  "projectile.cache" savefile-dir))
   :bind
   ("C-c p" . projectile-command-map))
 
