@@ -393,7 +393,7 @@ indent yanked text (with prefix arg don't indent)."
 ;; diff-hl
 ;; (global-diff-hl-mode +1)
 (add-hook 'dired-mode-hook 'diff-hl-dired-mode)
-(add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
+;; (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
 
 (defadvice server-visit-files (before parse-numbers-in-lines (files proc &optional nowait) activate)
     "Open file with emacsclient with cursors positioned on requested line.
