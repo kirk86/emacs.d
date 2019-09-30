@@ -57,10 +57,10 @@
 ;; config changes made through the customize UI will be stored here
 (setq custom-file (expand-file-name "init-custom.el" config-dir))
 
-;; ;; load the personal settings (this includes `custom-file')
-(when (file-exists-p config-dir)
-  (message "Loading personal configuration files in %s..." config-dir)
-  (mapc 'load (directory-files config-dir 't "^[^#\.].*\\.el$")))
+;; load the personal settings (this includes `custom-file')
+;; (when (file-exists-p config-dir)
+;;   (message "Loading personal configuration files in %s..." config-dir)
+;;   (mapc 'load (directory-files config-dir 't "^[^#\.].*\\.el$")))
 
 ;; (require 'global-keybindings)
 
@@ -175,8 +175,7 @@
 ;; LaTeX
 (use-package tex
   :ensure auctex
-  :defer t
-  :init (setq TeX-auto-save t))
+  :defer t)
 
 ;; (defun tex-view ()
 ;;   (interactive)
@@ -251,6 +250,11 @@
   (with-eval-after-load "enriched"
     (defun enriched-decode-display-prop (start end &optional param)
       (list start end))))
+
+;; load the personal settings (this includes `custom-file')
+(when (file-exists-p config-dir)
+  (message "Loading personal configuration files in %s..." config-dir)
+  (mapc 'load (directory-files config-dir 't "^[^#\.].*\\.el$")))
 
 (message "Emacs is ready Master %s!" current-user)
 
