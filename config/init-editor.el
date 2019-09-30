@@ -201,31 +201,15 @@
 (setq ispell-program-name "aspell" ; use aspell instead of ispell
       ispell-extra-args '("--sug-mode=ultra"))
 
-(defcustom my-flyspell t
-  "Non-nil values enable Prelude's flyspell support."
-  :type 'boolean
-  :group 'editor)
-
 (defun my-enable-flyspell ()
   "Enable command `flyspell-mode' if `prelude-flyspell' is not nil."
   (when (and my-flyspell (executable-find ispell-program-name))
     (flyspell-mode +1)))
 
-(defcustom my-clean-whitespace-on-save t
-    "Cleanup whitespace from file before it's saved.
-Will only occur if `prelude-whitespace' is also enabled."
-    :type 'boolean
-    :group 'editor)
-
 (defun my-cleanup-maybe ()
   "Invoke `whitespace-cleanup' if `prelude-clean-whitespace-on-save' is not nil."
   (when my-clean-whitespace-on-save
     (whitespace-cleanup)))
-
-(defcustom my-whitespace t
-  "Non-nil values enable Prelude's whitespace visualization."
-  :type 'boolean
-  :group 'editor)
 
 (defun my-enable-whitespace ()
   "Enable `whitespace-mode' if `prelude-whitespace' is not nil."
@@ -304,28 +288,11 @@ Will only occur if `prelude-whitespace' is also enabled."
 (with-region-or-buffer indent-region)
 (with-region-or-buffer untabify)
 
-(defcustom my-yank-indent-threshold 1000
-  "Threshold (# chars) over which indentation does not automatically occur."
-  :type 'number
-  :group 'editor)
-
 ;; automatically indenting yanked text if in programming-modes
 (defun yank-advised-indent-function (beg end)
   "Do indentation, as long as the region isn't too large."
   (if (<= (- end beg) my-yank-indent-threshold)
       (indent-region beg end nil)))
-
-(defcustom my-indent-sensitive-modes
-  '(conf-mode coffee-mode haml-mode python-mode slim-mode yaml-mode)
-  "Modes for which auto-indenting is suppressed."
-  :type 'list
-  :group 'editor)
-
-(defcustom my-yank-indent-modes '(LaTeX-mode TeX-mode)
-    "Modes in which to indent regions that are yanked (or yank-popped).
-Only modes that don't derive from `prog-mode' should be listed here."
-    :type 'list
-    :group 'editor)
 
 (defmacro advise-commands (advice-name commands class &rest body)
     "Apply advice named ADVICE-NAME to multiple COMMANDS.
@@ -451,7 +418,7 @@ and file 'filename' will be opened and cursor set on line 'linenumber'"
 ;; (when-system darwin
 ;;   ;; Change behavior of left command key
 ;;   (setq mac-command-modifier 'meta)
-             
+
 ;;   ;; Fix dired not working
 ;;   (require 'ls-lisp)
 ;;   (setq ls-lisp-dirs-first t

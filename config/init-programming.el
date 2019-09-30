@@ -50,9 +50,9 @@
 ;; (the final optional t sets the *append* argument)
 
 ;; smart curly braces
-(sp-pair "{" nil :post-handlers
-         '(((lambda (&rest _ignored)
-              (crux-smart-open-line-above)) "RET")))
+;; (sp-pair "{" nil :post-handlers
+;;          '(((lambda (&rest _ignored)
+;;               (crux-smart-open-line-above)) "RET")))
 
 ;; enlist a more liberal guru
 (setq guru-warn-only t)
@@ -64,14 +64,14 @@
     (flyspell-prog-mode))
   (when my-guru
     (guru-mode +1))
-  (smartparens-mode +1)
+  ;; (smartparens-mode +1)
   (my-enable-whitespace)
   (my-local-comment-auto-fill))
 
 (setq my-prog-mode-hook 'my-prog-mode-defaults)
 
 (add-hook 'prog-mode-hook (lambda ()
-                            (run-hooks 'prelude-prog-mode-hook)))
+                            (run-hooks 'my-prog-mode-hook)))
 
 ;; enable on-the-fly syntax checking
 (if (fboundp 'global-flycheck-mode)
