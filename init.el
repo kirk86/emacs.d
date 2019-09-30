@@ -95,18 +95,13 @@
   :ensure t
   :defer t)
 
-(use-package zenburn-theme
-  :ensure t
-  :config (load-theme 'zenburn t))
+;; string manipulation library
+(use-package s
+  :ensure t)
 
-;; columnd indicator at 80 chars for code writing
-(use-package fill-column-indicator
-  :ensure t
-  :config
-  (setq fci-rule-column 80)
-  (setq fci-rule-color "orange")
-  (add-hook 'prog-mode-hook 'fci-mode)
-  (add-hook 'text-mode-hook 'fci-mode))
+;; allows to easily try new packages installing/uninstall automatically
+(use-package try
+  :ensure t)
 
 ;; auto-complete for autocompletion
 ;; (use-package auto-complete
@@ -166,13 +161,17 @@
 
 ;; multiple cursors
 (use-package multiple-cursors
-  :ensure t)
+  :ensure t
+  :bind ("C-c m" . mc/edit-lines)
+  :bind ("C-c C-n" . mc/mark-next-like-this)
+  :bind ("C-c C-p" . mc/mark-previous-like-this)
+  :bind ("C-c a" . mc/mark-all-like-this))
 
 ;; expand region to select text like vim when using vi-()
 (use-package expand-region
   :ensure t
   :config
- ( global-set-key (kbd "C-c r") 'er/expand-region))
+  (global-set-key (kbd "C-c r") 'er/expand-region))
 
 (use-package magit
   :ensure t
@@ -194,10 +193,6 @@
   (setq projectile-cache-file (expand-file-name  "projectile.cache" savefile-dir))
   :bind ("C-c p" . projectile-command-map))
 
-;; allows to easily try new packages installing/uninstall automatically
-(use-package try
-  :ensure t)
-
 (use-package yasnippet
   :ensure t
   :config
@@ -211,9 +206,6 @@
 
 ;; (use-package yasnippet-snippets
 ;;   :ensure t)
-
-(use-package s
-  :ensure t)
 
 ;; (use-package pyvenv
 ;;   :ensure t)
@@ -251,6 +243,18 @@
 ;;      '(aw-leading-char-face
 ;;        ((t (:inherit ace-jump-face-foreground :height 3.0)))))))
 
+(use-package zenburn-theme
+  :ensure t
+  :config (load-theme 'zenburn t))
+
+;; columnd indicator at 80 chars for code writing
+(use-package fill-column-indicator
+  :ensure t
+  :config
+  (setq fci-rule-column 80)
+  (setq fci-rule-color "orange")
+  (add-hook 'prog-mode-hook 'fci-mode)
+  (add-hook 'text-mode-hook 'fci-mode))
 ;; Patch security vulnerability in Emacs versions older than 25.3
 (when (version< emacs-version "25.3")
   (with-eval-after-load "enriched"
