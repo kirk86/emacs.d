@@ -155,7 +155,7 @@
 (use-package undo-tree
   :ensure t
   :config
-  (global-undo-tree-mode))
+  (global-undo-tree-mode t))
   ;; (diminish 'undo-tree-mode)))  ;; sensible undo-tree
 
 ;; deletes all the whitespace when you hit backspace or delete
