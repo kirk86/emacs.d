@@ -215,8 +215,8 @@
 (use-package s
   :ensure t)
 
-(use-package pyvenv
-  :ensure t)
+;; (use-package pyvenv
+;;   :ensure t)
 
 ;; another change here
 
