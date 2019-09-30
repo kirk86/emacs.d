@@ -209,8 +209,8 @@
   (yas-load-directory (concat emacs-dir "snippets"))
   (yas-global-mode t))
 
-(use-package yasnippet-snippets
-  :ensure t)
+;; (use-package yasnippet-snippets
+;;   :ensure t)
 
 (use-package s
   :ensure t)
