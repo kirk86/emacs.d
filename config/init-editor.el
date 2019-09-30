@@ -190,6 +190,10 @@
 ;; keep in mind known issues with zsh - see emacs wiki
 (setq tramp-default-method "ssh")
 
+;; TRAMP settings running remote programs that create local X11 windows
+(add-to-list 'tramp-remote-process-environment
+             (format "DISPLAY=%s" (getenv "DISPLAY")))
+
 (set-default 'imenu-auto-rescan t)
 
 ;; flyspell-mode does spell-checking on the fly as you type
