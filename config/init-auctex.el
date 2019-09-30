@@ -120,5 +120,10 @@
 ;;         (setq scale-amount (1- scale-amount)))
 ;;             )))
 
+;; adding own headings to auctex outline minor mode
+(setq TeX-outline-extra
+      '(("[ \t]*\\\\\\(bib\\)?item\\b" 7)
+        ("\\\\bibliography\\b" 2)))
+
 (provide 'init-auctex)
 ;;; init-auctex.el ends here

@@ -100,7 +100,8 @@
   :config
   (setq fci-rule-column 80)
   (setq fci-rule-color "orange")
-  (add-hook 'prog-mode-hook 'fci-mode))
+  (add-hook 'prog-mode-hook 'fci-mode)
+  (add-hook 'text-mode-hook 'fci-mode))
 
 ;; auto-complete for autocompletion
 ;; (use-package auto-complete
@@ -166,7 +167,7 @@
 (use-package expand-region
   :ensure t
   :config
-  (global-set-key (kbd "C-c =") 'er/expand-region))
+ ( global-set-key (kbd "C-c r") 'er/expand-region))
 
 (use-package magit
   :ensure t

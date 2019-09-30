@@ -419,7 +419,8 @@ and file 'filename' will be opened and cursor set on line 'linenumber'"
 ;; Enable line numbers
 ;;(linum-mode)  ;; enables only for current buffer
 (when (version<= "26.0.50" emacs-version)
-  (add-hook 'prog-mode-hook 'linum-mode))
+  (add-hook 'prog-mode-hook 'linum-mode)
+  (add-hook 'text-mode-hook 'linum-mode))
   ;;(global-linum-mode t))
 
 ;; Add solid line after line number
