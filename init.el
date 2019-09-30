@@ -90,6 +90,11 @@
 
 (eval-when-compile (require 'use-package))
 
+;; Keep the mode-line clean
+(use-package diminish
+  :ensure t
+  :defer t)
+
 (use-package zenburn-theme
   :ensure t
   :config (load-theme 'zenburn t))
