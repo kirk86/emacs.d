@@ -146,6 +146,11 @@
 ;;   (add-hook 'python-mode-hook 'jedi:)
 ;;   (add-hook 'python-mode-hook 'jedi:ac-setup))
 
+;; font-lock annotations like TODO in source code
+(use-package hl-todo
+  :ensure t
+  :config (global-hl-todo-mode t))
+
 ;; undo-tree
 (use-package undo-tree
   :ensure t
