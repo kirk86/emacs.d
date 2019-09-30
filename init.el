@@ -174,7 +174,9 @@
 
 ;; LaTeX
 (use-package tex
-  :ensure auctex)
+  :ensure auctex
+  :defer t
+  :init (setq TeX-auto-save t))
 
 ;; (defun tex-view ()
 ;;   (interactive)
