@@ -62,8 +62,8 @@
   (when (and (executable-find ispell-program-name)
              my-flyspell)
     (flyspell-prog-mode))
-  (when my-guru
-    (guru-mode +1))
+  ;; (when my-guru
+  ;;   (guru-mode +1))
   ;; (smartparens-mode +1)
   (my-enable-whitespace)
   (my-local-comment-auto-fill))

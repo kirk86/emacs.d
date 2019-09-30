@@ -103,6 +103,12 @@
 (use-package try
   :ensure t)
 
+;; disables some keybindings and enables default emacs keybindings
+;; (use-package guru-mode
+;;   :ensure t
+;;   :config
+;;   (add-hook 'prog-mode-hook 'guru-mode))
+
 ;; auto-complete for autocompletion
 ;; (use-package auto-complete
 ;;   :ensure t
