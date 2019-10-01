@@ -69,17 +69,26 @@
 
 ;; setup package archives
 (require 'package)
-(setq package-archives
-      '(("MELPA STABLE" . "https://stable.melpa.org/packages/")
-        ("GNU ELPA"     . "https://elpa.gnu.org/packages/")
-        ("ORG"          . "https://orgmode.org/elpa/")
-        ("MELPA"        . "https://melpa.org/packages/"))
-      package-archive-priorities
-      '(("MELPA Stable" . 10)
-        ("GNU ELPA"     . 5)
-        ("ORG"          . 3)
-        ("MELPA"        . 1)))
+;; (setq package-archives
+;;       '(
+;; ;; ("MELPA STABLE" . "https://stable.melpa.org/packages/")
+;;         ;; ("GNU ELPA"     . "https://elpa.gnu.org/packages/")
+;;         ("ORG"          . "https://orgmode.org/elpa/")
+;;         ;; ("MELPA"        . "https://melpa.org/packages/")
+;;       )
+;;       package-archive-priorities
+;;       '(
+;; ;; ("MELPA Stable" . 10)
+;;         ;; ("GNU ELPA"     . 5)
+;;         ;; ("ORG"          . 3)
+;;         ;; ("MELPA"        . 1)
+;;         ))
 
+(setq package-archives '(("org" . "http://orgmode.org/elpa/")
+                         ("gnu" . "http://elpa.gnu.org/packages/")
+                         ("melpa" . "https://melpa.org/packages/")))
+
+;; don't load any packages before emacs starts up
 (setq package-enable-at-startup nil)
 (package-initialize)
 
@@ -88,26 +97,38 @@
   (package-refresh-contents)
   (package-install 'use-package))
 
+;; (require 'init-exec-path) ;; Set up $PATH
 (eval-when-compile (require 'use-package))
 
 ;; Keep the mode-line clean
 (use-package diminish
-  :ensure t
-  :defer t)
+  :ensure t)
+
+;; ;; modern files api for emacs
+;; (use-package f
+;;   :ensure t)
 
 ;; string manipulation library
 (use-package s
   :ensure t)
 
+;; function combinators
+(use-package dash-functional
+  :ensure t)
+
+;; font-lock annotations like TODO in source code
+(use-package hl-todo
+  :ensure t
+  :config (global-hl-todo-mode t))
+
+;; authentication without user interaction for async if using mail from emacs
+;; (use-package auth-source
+;;   :no-require t
+;;   :config (setq auth-sources '("~/.authinfo.gpg" "~/.netrc")))
+
 ;; allows to easily try new packages installing/uninstall automatically
 (use-package try
   :ensure t)
-
-;; disables some keybindings and enables default emacs keybindings
-;; (use-package guru-mode
-;;   :ensure t
-;;   :config
-;;   (add-hook 'prog-mode-hook 'guru-mode))
 
 ;; auto-complete for autocompletion
 ;; (use-package auto-complete
@@ -152,14 +173,10 @@
 ;;   (add-hook 'python-mode-hook 'jedi:)
 ;;   (add-hook 'python-mode-hook 'jedi:ac-setup))
 
-;; font-lock annotations like TODO in source code
-(use-package hl-todo
-  :ensure t
-  :config (global-hl-todo-mode t))
-
 ;; undo-tree
 (use-package undo-tree
   :ensure t
+  ;; :defines undo-tree-visualizer-selection-mode
   :config
   (global-undo-tree-mode t))
   ;; (diminish 'undo-tree-mode)))  ;; sensible undo-tree
@@ -190,8 +207,7 @@
 
 ;; LaTeX
 (use-package tex
-  :ensure auctex
-  :defer t)
+  :ensure auctex)
 
 ;; (defun tex-view ()
 ;;   (interactive)
@@ -206,6 +222,7 @@
 
 (use-package yasnippet
   :ensure t
+  :commands yas-load-directory
   :config
   ;; (setq yas-fallback-behavior 'return-nil)
   ;; (setq yas-also-auto-indent-first-line t)
@@ -215,13 +232,8 @@
   (yas-load-directory (concat emacs-dir "snippets"))
   (yas-global-mode t))
 
-;; (use-package yasnippet-snippets
-;;   :ensure t)
-
 ;; (use-package pyvenv
 ;;   :ensure t)
-
-;; another change here
 
 ;; brings ivy as dependency
 ;; (use-package find-file-in-project
@@ -253,6 +265,18 @@
 ;;     (custom-set-faces
 ;;      '(aw-leading-char-face
 ;;        ((t (:inherit ace-jump-face-foreground :height 3.0)))))))
+
+;; dependency of anaconda-mode, I don't like when pkgs are not self contained
+(use-package pythonic
+  :ensure t
+  :defer t)
+
+;; python development package
+(use-package anaconda-mode
+  :ensure t
+  :config
+  (add-hook 'python-mode-hook 'anaconda-mode)
+  (add-hook 'python-mode-hook 'anaconda-eldoc-mode))
 
 (use-package zenburn-theme
   :ensure t

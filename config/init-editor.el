@@ -10,6 +10,7 @@
 (require 'eshell)
 (require 'recentf)
 (require 'savehist)
+(require 'diminish)
 
 ;; UI Settings
 
@@ -313,7 +314,7 @@ indent yanked text (with prefix arg don't indent)."
                        (let ((transient-mark-mode nil))
                          (yank-advised-indent-function (region-beginning) (region-end)))))
 
-;; (diminish 'undo-tree-mode)
+(diminish 'undo-tree-mode)
 
 ;; abbrev config
 (add-hook 'text-mode-hook 'abbrev-mode)
