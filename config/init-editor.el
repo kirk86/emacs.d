@@ -61,7 +61,7 @@
 ;; more useful frame title, that show either a file or a
 ;; buffer name (if the buffer isn't visiting a file)
 (setq frame-title-format
-      '("" invocation-name " Prelude - "
+      '("" invocation-name " Buffer - "
         (:eval (if (buffer-file-name)
                    (abbreviate-file-name
                     (buffer-file-name))
@@ -413,18 +413,18 @@ and file 'filename' will be opened and cursor set on line 'linenumber'"
 ;; (ido-mode t)
 
 ;; Set window title to full file name
-;; (setq frame-title-format '("Emacs @ " system-name ": %b %+%+ %f"))
+(setq frame-title-format '("Emacs @ " system-name ": %b %+%+ %f"))
 
 ;; Setup stuff on macOS
 ;; (when-system darwin
 ;;   ;; Change behavior of left command key
 ;;   (setq mac-command-modifier 'meta)
 
-;;   ;; Fix dired not working
-;;   (require 'ls-lisp)
-;;   (setq ls-lisp-dirs-first t
-;; 	ls-lisp-use-insert-directory-program nil)
-;;   (setq dired-listing-switches "-alhv")
+;; Fix dired not working
+;; (require 'ls-lisp)
+;; (setq ls-lisp-dirs-first t
+;;       ls-lisp-use-insert-directory-program nil)
+;; (setq dired-listing-switches "-alhv")
 
 ;;   ;; Add brew binaries to PATH
 ;;   (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))

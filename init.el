@@ -100,6 +100,10 @@
 ;; (require 'init-exec-path) ;; Set up $PATH
 (eval-when-compile (require 'use-package))
 
+
+;; suppress byte compile warnings by turning them off
+(setq ad-redefinition-action 'accept)
+
 ;; Keep the mode-line clean
 (use-package diminish
   :ensure t)
