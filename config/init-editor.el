@@ -101,6 +101,7 @@
 (delete-selection-mode t)
 
 ;; store all backup and autosave files in the tmp dir
+(setq temporary-file-directory "/tmp/")
 (setq backup-directory-alist
       `((".*" . ,temporary-file-directory)))
 (setq auto-save-file-name-transforms
