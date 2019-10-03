@@ -69,24 +69,20 @@
 
 ;; setup package archives
 (require 'package)
-;; (setq package-archives
-;;       '(
-;; ;; ("MELPA STABLE" . "https://stable.melpa.org/packages/")
-;;         ;; ("GNU ELPA"     . "https://elpa.gnu.org/packages/")
-;;         ("ORG"          . "https://orgmode.org/elpa/")
-;;         ;; ("MELPA"        . "https://melpa.org/packages/")
-;;       )
-;;       package-archive-priorities
-;;       '(
-;; ;; ("MELPA Stable" . 10)
-;;         ;; ("GNU ELPA"     . 5)
-;;         ;; ("ORG"          . 3)
-;;         ;; ("MELPA"        . 1)
-;;         ))
+(setq package-archives
+      '(("MELPA STABLE" . "https://stable.melpa.org/packages/")
+        ("GNU ELPA"     . "https://elpa.gnu.org/packages/")
+        ("ORG"          . "https://orgmode.org/elpa/")
+        ("MELPA"        . "https://melpa.org/packages/"))
+      package-archive-priorities
+      '(("MELPA STABLE" . 10)
+        ("GNU ELPA"     . 5)
+        ("ORG"          . 3)
+        ("MELPA"        . 1)))
 
-(setq package-archives '(("org" . "http://orgmode.org/elpa/")
-                         ("gnu" . "http://elpa.gnu.org/packages/")
-                         ("melpa" . "https://stable.melpa.org/packages/")))
+;; (setq package-archives '(("org" . "http://orgmode.org/elpa/")
+;;                          ("gnu" . "http://elpa.gnu.org/packages/")
+;;                          ("melpa" . "https://stable.melpa.org/packages/")))
 
 ;; don't load any packages before emacs starts up
 (setq package-enable-at-startup nil)
