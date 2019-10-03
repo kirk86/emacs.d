@@ -86,7 +86,7 @@
 
 (setq package-archives '(("org" . "http://orgmode.org/elpa/")
                          ("gnu" . "http://elpa.gnu.org/packages/")
-                         ("melpa" . "https://melpa.org/packages/")))
+                         ("melpa" . "https://stable.melpa.org/packages/")))
 
 ;; don't load any packages before emacs starts up
 (setq package-enable-at-startup nil)
