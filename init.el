@@ -181,6 +181,8 @@
   :ensure t
   ;; :defines undo-tree-visualizer-selection-mode
   :config
+  (defvar undo-tree-mode)
+  (defvar undo-tree-visualizer-selection-node)
   (global-undo-tree-mode t))
   ;; (diminish 'undo-tree-mode)))  ;; sensible undo-tree
 
@@ -225,7 +227,7 @@
 
 (use-package yasnippet
   :ensure t
-  :commands yas-load-directory
+  ;; :commands yas-load-directory
   :config
   ;; (setq yas-fallback-behavior 'return-nil)
   ;; (setq yas-also-auto-indent-first-line t)
