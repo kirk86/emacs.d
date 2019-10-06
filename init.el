@@ -80,10 +80,6 @@
         ("ORG"          . 3)
         ("MELPA"        . 1)))
 
-;; (setq package-archives '(("org" . "http://orgmode.org/elpa/")
-;;                          ("gnu" . "http://elpa.gnu.org/packages/")
-;;                          ("melpa" . "https://stable.melpa.org/packages/")))
-
 ;; don't load any packages before emacs starts up
 (setq package-enable-at-startup nil)
 (package-initialize)
@@ -103,17 +99,20 @@
 (use-package diminish
   :ensure t)
 
-;; ;; modern files api for emacs
-;; (use-package f
-;;   :ensure t)
+;; modern files api for emacs
+(use-package f
+  :ensure t)
 
 ;; string manipulation library
 (use-package s
   :ensure t)
 
-;; function combinators
-(use-package dash-functional
+(use-package dash
   :ensure t)
+
+;; function combinators
+;; (use-package dash-functional
+;;   :ensure t)
 
 ;; font-lock annotations like TODO in source code
 (use-package hl-todo
@@ -164,6 +163,11 @@
   :ensure t
   :config
   (global-flycheck-mode t))
+
+(use-package py-autopep8
+  :ensure t
+  :config
+  (add-hook 'python-mode-hook 'py-autopep8-enable-on-save))
 
 ;; ;; jedi for python auto-completion
 ;; (use-package jedi
