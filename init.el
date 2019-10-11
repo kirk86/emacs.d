@@ -1,7 +1,4 @@
-;;; package --- Summary
-
-;; init.el -*- lexical-binding: t; -*-
-;;; init.el --- Load the full configuration
+;;; package --- init.el Load the full configuration
 ;;; Commentary:
 
 ;;; Code:
@@ -137,11 +134,9 @@
   :ensure t
   :init (global-company-mode t)
   :config
-  (setq company-idle-delay 0.1)
+  (setq company-idle-delay 0)
   (setq company-tooltip-limit 10)
   (setq company-minimum-prefix-length 1)
-  ;; Aligns annotation to the right hand side
-  (setq company-tooltip-align-annotations t)
   (setq company-begin-commands '(self-insert-command)))
 
 ;; there's an issue with func signatures
@@ -149,7 +144,8 @@
 ;; requires jedi, virtualenv, and epc installed via pip in your env outside emacs
 (use-package company-jedi
   :ensure t
-  :init (add-to-list 'company-backends 'company-jedi))
+  :init (add-to-list 'company-backends 'company-jedi)
+  :config (setq jedi:complete-on-dot t))
 
 (use-package python
   :hook ((python-mode . jedi:setup)))
