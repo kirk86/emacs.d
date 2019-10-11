@@ -67,15 +67,15 @@
 ;; setup package archives
 (require 'package)
 (setq package-archives
-      '(("MELPA STABLE" . "https://stable.melpa.org/packages/")
-        ("GNU ELPA"     . "https://elpa.gnu.org/packages/")
-        ("ORG"          . "https://orgmode.org/elpa/")
-        ("MELPA"        . "https://melpa.org/packages/"))
+      '(("melpa-stable" . "https://stable.melpa.org/packages/")
+        ("gpu-elpa"     . "https://elpa.gnu.org/packages/")
+        ("org"          . "https://orgmode.org/elpa/")
+        ("melpa"        . "https://melpa.org/packages/"))
       package-archive-priorities
-      '(("MELPA STABLE" . 10)
-        ("GNU ELPA"     . 5)
-        ("ORG"          . 3)
-        ("MELPA"        . 1)))
+      '(("melpa-stable" . 10)
+        ("gnu-elpa"     . 5)
+        ("org"          . 3)
+        ("melpa"        . 6)))
 
 ;; don't load any packages before emacs starts up
 (setq package-enable-at-startup nil)
@@ -129,26 +129,32 @@
 (use-package try
   :ensure t)
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; setup for company-jedi but seems slow in providing completions ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; company for autocompletion
-(use-package company
-  :ensure t
-  :init (global-company-mode t)
-  :config
-  (setq company-idle-delay 0)
-  (setq company-tooltip-limit 10)
-  (setq company-minimum-prefix-length 1)
-  (setq company-begin-commands '(self-insert-command)))
+;; (use-package company
+;;   :ensure t
+;;   :init (global-company-mode t)
+;;   :config
+;;   (setq company-idle-delay 0)
+;;   (setq company-begin-commands '(self-insert-command)))
 
-;; there's an issue with func signatures
-;; needs to add changes manually https://github.com/syohex/emacs-company-jedi/issues/24
-;; requires jedi, virtualenv, and epc installed via pip in your env outside emacs
-(use-package company-jedi
-  :ensure t
-  :init (add-to-list 'company-backends 'company-jedi)
-  :config (setq jedi:complete-on-dot t))
+;; ;; use the melpa since melpa-stable apparently has bugs
+;; (use-package jedi-core
+;;   :pin melpa
+;;   :ensure t)
 
-(use-package python
-  :hook ((python-mode . jedi:setup)))
+;; ;; there's an issue with func signatures
+;; ;; needs to add changes manually https://github.com/syohex/emacs-company-jedi/issues/24
+;; ;; requires jedi, virtualenv, and epc installed via pip in your env outside emacs
+;; (use-package company-jedi
+;;   :ensure t
+;;   :init (add-to-list 'company-backends 'company-jedi)
+;;   :config (setq jedi:complete-on-dot t))
+
+;; (use-package python
+;;   :hook ((python-mode . jedi:setup)))
 
 ;; flycheck on the fly checking code
 (use-package flycheck
@@ -228,6 +234,10 @@
   :ensure t)
   ;; :hook ((python-mode . pyvenv-mode))
 
+(use-package elpy
+  :ensure t
+  :init (elpy-enable t))
+
 (use-package highlight-indent-guides
   :ensure t
   :config
@@ -256,22 +266,21 @@
 ;; (use-package company
 ;;   :defer t
 ;;   :bind (:map company-active-map
-;;          ([return] . nil)
-;;          ("RET" . nil)
-
-;;          ("TAB" . company-complete-selection)
-;;          ([tab] . company-complete-selection)
-;;          ;; ("S-TAB" . company-select-previous)
-;;          ;; ([backtab] . company-select-previous)
-;;          ("C-j" . company-complete-selection))
+;;               ("RET"     . company-complete-selection)
+;;               ([return]  . company-complete-selection)
+;;               ("TAB"     . company-select-next)
+;;               ([tab]     . company-select-next)
+;;               ("S-TAB"   . company-select-previous)
+;;               ([backtab] . company-select-previous)
+;;               ("C-j"     . company-complete-selection))
 ;;   :config
-;;   (setq company-idle-delay 0.1)
+;;   (setq company-idle-delay 0)
 ;;   (setq company-tooltip-limit 10)
 ;;   (setq company-minimum-prefix-length 1)
 ;;   ;; Aligns annotation to the right hand side
-;;   (setq company-tooltip-align-annotations t)
+;;   ;; (setq company-tooltip-align-annotations t)
 ;;   (setq company-begin-commands '(self-insert-command))
-;;   (global-company-mode 1))
+;;   (global-company-mode t))
 
 ;; (use-package anaconda-mode
 ;;   :ensure t

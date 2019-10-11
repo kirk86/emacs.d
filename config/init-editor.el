@@ -58,6 +58,12 @@
 ;; enable y/n answers
 (fset 'yes-or-no-p 'y-or-n-p)
 
+;; enables auto insertion of commentary section in lisp files
+(auto-insert-mode t)
+
+;; case-insensitive completion/buffer switch
+(setq completion-ignore-case t)
+
 ;; more useful frame title, that show either a file or a
 ;; buffer name (if the buffer isn't visiting a file)
 (setq frame-title-format
