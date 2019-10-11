@@ -92,6 +92,14 @@
 ;; (require 'init-exec-path) ;; Set up $PATH
 (eval-when-compile (require 'use-package))
 
+;; keep packages updated
+(use-package auto-package-update
+  :defer t
+  :config
+  (setq auto-package-update-delete-old-versions t)
+  (setq auto-package-update-hide-results t)
+  (auto-package-update-maybe))
+
 ;; suppress byte compile warnings by turning them off
 ;; (setq ad-redefinition-action 'accept)
 
@@ -110,10 +118,6 @@
 (use-package dash
   :ensure t)
 
-;; function combinators
-;; (use-package dash-functional
-;;   :ensure t)
-
 ;; font-lock annotations like TODO in source code
 (use-package hl-todo
   :ensure t
@@ -128,35 +132,27 @@
 (use-package try
   :ensure t)
 
-;; auto-complete for autocompletion
-;; (use-package auto-complete
-;;   :ensure t
-;;   :init
-;;     (ac-config-default)
-;;     (global-auto-complete-mode t)))
-
 ;; company for autocompletion
 (use-package company
   :ensure t
+  :init (global-company-mode t)
   :config
-  (setq company-idle-delay 0)
-  (setq company-minimum-prefix-length 3)
-  ;; (setq company-show-numbers t)
-  ;; (setq company-tooltip-limit 20)
-  ;; (setq company-dabbrev-downcase nil)
-  ;; (setq company-dabbrev-ignore-case t)
-  ;; (setq company-dabbrev-code-ignore-case t)
-  ;; (setq company-dabbrev-code-everywhere t)
-  ;; (setq company-etags-ignore-case t)
-  ;; (setq company-global-modes
-  ;;       '(not
-  ;;         eshell-mode comint-mode text-mode erc-mode))
-  (global-company-mode t))
+  (setq company-idle-delay 0.1)
+  (setq company-tooltip-limit 10)
+  (setq company-minimum-prefix-length 1)
+  ;; Aligns annotation to the right hand side
+  (setq company-tooltip-align-annotations t)
+  (setq company-begin-commands '(self-insert-command)))
 
-;; (use-package company-jedi
-;;   :ensure t
-;;   :config
-;;   (add-hook 'python-mode-hook 'jedi:setup))
+;; there's an issue with func signatures
+;; needs to add changes manually https://github.com/syohex/emacs-company-jedi/issues/24
+;; requires jedi, virtualenv, and epc installed via pip in your env outside emacs
+(use-package company-jedi
+  :ensure t
+  :init (add-to-list 'company-backends 'company-jedi))
+
+(use-package python
+  :hook ((python-mode . jedi:setup)))
 
 ;; flycheck on the fly checking code
 (use-package flycheck
@@ -168,13 +164,6 @@
   :ensure t
   :config
   (add-hook 'python-mode-hook 'py-autopep8-enable-on-save))
-
-;; ;; jedi for python auto-completion
-;; (use-package jedi
-;;   :ensure t
-;;   :init
-;;   (add-hook 'python-mode-hook 'jedi:)
-;;   (add-hook 'python-mode-hook 'jedi:ac-setup))
 
 ;; undo-tree
 (use-package undo-tree
@@ -212,6 +201,8 @@
 
 ;; LaTeX
 (use-package tex
+  :defines TeX-test-compilation-log
+  :functions AUCTeX-set-ert-path
   :ensure auctex)
 
 ;; (defun tex-view ()
@@ -237,23 +228,15 @@
   (yas-load-directory (concat emacs-dir "snippets"))
   (yas-global-mode t))
 
-;; (use-package pyvenv
-;;   :ensure t)
-
-;; brings ivy as dependency
-;; (use-package find-file-in-project
-;;   :ensure t)
+(use-package pyvenv
+  :ensure t)
+  ;; :hook ((python-mode . pyvenv-mode))
 
 (use-package highlight-indent-guides
   :ensure t
   :config
   (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
   (setq highlight-indent-guides-method 'column))
-
-;; (use-package elpy
-;;   :ensure t
-;;   :custom (elpy-rpc-backend "jedi")
-;;   :config (elpy-enable))
 
 ;; On Linux Emacs doesn't use the shell PATH if it's not started from
 ;; the shell. Let's fix that:
@@ -271,17 +254,39 @@
 ;;      '(aw-leading-char-face
 ;;        ((t (:inherit ace-jump-face-foreground :height 3.0)))))))
 
-;; dependency of anaconda-mode, I don't like when pkgs are not self contained
-(use-package pythonic
-  :ensure t
-  :defer t)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; setup for anaconda-mode if company/jedi are not preferred ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; (use-package company
+;;   :defer t
+;;   :bind (:map company-active-map
+;;          ([return] . nil)
+;;          ("RET" . nil)
 
-;; python development package
-(use-package anaconda-mode
-  :ensure t
-  :config
-  (add-hook 'python-mode-hook 'anaconda-mode)
-  (add-hook 'python-mode-hook 'anaconda-eldoc-mode))
+;;          ("TAB" . company-complete-selection)
+;;          ([tab] . company-complete-selection)
+;;          ;; ("S-TAB" . company-select-previous)
+;;          ;; ([backtab] . company-select-previous)
+;;          ("C-j" . company-complete-selection))
+;;   :config
+;;   (setq company-idle-delay 0.1)
+;;   (setq company-tooltip-limit 10)
+;;   (setq company-minimum-prefix-length 1)
+;;   ;; Aligns annotation to the right hand side
+;;   (setq company-tooltip-align-annotations t)
+;;   (setq company-begin-commands '(self-insert-command))
+;;   (global-company-mode 1))
+
+;; (use-package anaconda-mode
+;;   :ensure t
+;;   :bind (:map anaconda-mode-map
+;;                 ("M-," . anaconda-mode-find-assignments))
+;;   :hook ((python-mode . anaconda-mode)
+;;          (python-mode . anaconda-eldoc-mode)))
+
+;; (use-package company-anaconda
+;;   :ensure t
+;;   :config (add-to-list 'company-backends 'company-anaconda))
 
 (use-package zenburn-theme
   :ensure t

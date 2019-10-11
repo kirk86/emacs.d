@@ -3,3 +3,5 @@ savefile/
 transient/
 auto-save-list/
 anaconda-mode/
+.python_environments/
+projectile_bookmarks.eld
