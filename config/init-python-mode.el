@@ -28,5 +28,8 @@
 ;;(setq ropemacs-enable-shortcuts nil)
 ;;(setq ropemacs-local-prefix "C-c C-p")
 
+(set-variable 'python-indent-offset 4)
+(set-variable 'python-indent-guess-indent-offset nil)
+
 (provide 'init-python-mode)
 ;;; init-python-mode.el ends here

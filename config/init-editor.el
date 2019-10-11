@@ -62,7 +62,9 @@
 (auto-insert-mode t)
 
 ;; case-insensitive completion/buffer switch
-(setq completion-ignore-case t)
+;; (setq completion-ignore-case t)
+(setq read-file-name-completion-ignore-case t)
+(setq read-buffer-completion-ignore-case t)
 
 ;; more useful frame title, that show either a file or a
 ;; buffer name (if the buffer isn't visiting a file)
