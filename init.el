@@ -242,10 +242,18 @@
   :config
   (global-flycheck-mode t))
 
+;; formatting buffer on save according to autopep8
 (use-package py-autopep8
   :ensure t
   :config
   (add-hook 'python-mode-hook 'py-autopep8-enable-on-save))
+
+;; sort python imports on buffer save according to length
+(use-package py-isort
+  :ensure t
+  :config
+  (add-hook 'before-save-hook 'py-isort-before-save)
+  (setq py-isort-options '("--length-sort")))
 
 (use-package zenburn-theme
   :ensure t
