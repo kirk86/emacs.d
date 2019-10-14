@@ -210,6 +210,7 @@
   :ensure t)
   ;; :hook ((python-mode . pyvenv-mode))
 
+;; complete any, autocompletion package
 (use-package company
   :ensure t
   :config
@@ -218,6 +219,7 @@
   ;; (global-set-key (kbd "C-<tab>") 'company-complete)
   )
 
+;; language server protocol for autocompletion, linting and documentation
 (use-package lsp-mode
   :pin melpa
   :ensure t
@@ -227,11 +229,13 @@
   (lsp-prefer-flymake nil) ; Use flycheck instead of flymake
   (setq lsp-log-io t))
 
+;; ui interface to lsp for better completions and documentation
 (use-package lsp-ui
   :pin melpa
   :ensure t
   :commands lsp-ui-mode)
 
+;; package providing completions for lsp through company
 (use-package company-lsp
   :pin melpa
   :ensure t
