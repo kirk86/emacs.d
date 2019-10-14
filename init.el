@@ -120,11 +120,6 @@
   :ensure t
   :config (global-hl-todo-mode t))
 
-;; authentication without user interaction for async if using mail from emacs
-;; (use-package auth-source
-;;   :no-require t
-;;   :config (setq auth-sources '("~/.authinfo.gpg" "~/.netrc")))
-
 ;; allows to easily try new packages installing/uninstall automatically
 (use-package try
   :ensure t)
@@ -153,7 +148,7 @@
   :init (add-to-list 'company-backends 'company-jedi)
   :config
   (setq jedi:complete-on-dot t)
-  (setq jedi:server-args '("--log-level=DEBUG" "--log=/Users/jm/jedi.log" "--log-traceback")))
+  (setq jedi:server-args '("--log-level=DEBUG" "--log=/Users/%s/.emacs.d/jedi.log" 'current-user "--log-traceback")))
 
 (use-package python
   :hook ((python-mode . jedi:setup)))
@@ -164,10 +159,18 @@
   :config
   (global-flycheck-mode t))
 
+;; formatting buffer on save according to autopep8
 (use-package py-autopep8
   :ensure t
   :config
   (add-hook 'python-mode-hook 'py-autopep8-enable-on-save))
+
+;; sort python imports on buffer save according to length
+(use-package py-isort
+  :ensure t
+  :config
+  (add-hook 'before-save-hook 'py-isort-before-save)
+  (setq py-isort-options '("--length-sort")))
 
 ;; undo-tree
 (use-package undo-tree
@@ -236,16 +239,6 @@
   :ensure t)
   ;; :hook ((python-mode . pyvenv-mode))
 
-;; (use-package elpy
-;;   :ensure t
-;;   :init (elpy-enable t))
-
-;; (use-package company
-;;   :ensure t
-;;   :config
-;;   (setq company-idle-delay 0)
-;;   (setq company-begin-commands '(self-insert-command)))
-
 (use-package highlight-indent-guides
   :ensure t
   :config
@@ -257,49 +250,6 @@
 (use-package exec-path-from-shell
   :ensure t
   :config (exec-path-from-shell-initialize))
-
-;; ace-window allows to jump between windows with C-x o winnumber
-;; (use-package ace-window
-;;   :ensure t
-;;   :init
-;;   (progn
-;;     (global-set-key [remap other-window] 'ace-window)
-;;     (custom-set-faces
-;;      '(aw-leading-char-face
-;;        ((t (:inherit ace-jump-face-foreground :height 3.0)))))))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; setup for anaconda-mode if company/jedi are not preferred ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; (use-package company
-;;   :defer t
-;;   :bind (:map company-active-map
-;;               ("RET"     . company-complete-selection)
-;;               ([return]  . company-complete-selection)
-;;               ("TAB"     . company-select-next)
-;;               ([tab]     . company-select-next)
-;;               ("S-TAB"   . company-select-previous)
-;;               ([backtab] . company-select-previous)
-;;               ("C-j"     . company-complete-selection))
-;;   :config
-;;   (setq company-idle-delay 0)
-;;   (setq company-tooltip-limit 10)
-;;   (setq company-minimum-prefix-length 1)
-;;   ;; Aligns annotation to the right hand side
-;;   ;; (setq company-tooltip-align-annotations t)
-;;   (setq company-begin-commands '(self-insert-command))
-;;   (global-company-mode t))
-
-;; (use-package anaconda-mode
-;;   :ensure t
-;;   :bind (:map anaconda-mode-map
-;;                 ("M-," . anaconda-mode-find-assignments))
-;;   :hook ((python-mode . anaconda-mode)
-;;          (python-mode . anaconda-eldoc-mode)))
-
-;; (use-package company-anaconda
-;;   :ensure t
-;;   :config (add-to-list 'company-backends 'company-anaconda))
 
 (use-package zenburn-theme
   :ensure t
