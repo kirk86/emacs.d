@@ -130,10 +130,18 @@
   :config
   (global-flycheck-mode t))
 
+;; formatting buffer on save according to autopep8
 (use-package py-autopep8
   :ensure t
   :config
   (add-hook 'python-mode-hook 'py-autopep8-enable-on-save))
+
+;; sort python imports on buffer save according to length
+(use-package py-isort
+  :ensure t
+  :config
+  (add-hook 'before-save-hook 'py-isort-before-save)
+  (setq py-isort-options '("--length-sort")))
 
 ;; undo-tree
 (use-package undo-tree
@@ -202,17 +210,59 @@
   :ensure t)
   ;; :hook ((python-mode . pyvenv-mode))
 
+(use-package company
+  :ensure t
+  :config
+  (setq company-idle-delay 0)
+  (global-company-mode t)
+  ;; (global-set-key (kbd "C-<tab>") 'company-complete)
+  )
+
 (use-package lsp-mode
   :pin melpa
   :ensure t
   :hook (prog-mode . lsp)
   :commands lsp
-  :config (setq lsp-log-io t))
+  :config
+  (lsp-prefer-flymake nil) ; Use flycheck instead of flymake
+  (setq lsp-log-io t))
 
 (use-package lsp-ui
   :pin melpa
   :ensure t
   :commands lsp-ui-mode)
+
+(use-package company-lsp
+  :pin melpa
+  :ensure t
+  :commands company-lsp
+  :config (push 'company-lsp company-backends)
+  ;; Disable client-side cache because the LSP server does a better job.
+  (setq company-transformers nil
+        company-lsp-async t
+        company-lsp-cache-candidates nil))
+
+;; let's use microsoft's language server protocol since it's faster than pyls
+;; using this doesn't require pip install pyls
+(use-package lsp-python-ms
+  :ensure t
+  :hook
+  (python-mode . (lambda ()
+                   (require 'lsp-python-ms)
+                   (lsp))))  ; or lsp-deferred
+
+;; debugger adapter protocol for many languages
+(use-package dap-mode
+  :ensure t
+  :config
+  (dap-mode t)
+  (dap-ui-mode t)
+  ;; enables mouse hover support
+  (dap-tooltip-mode t)
+  ;; use tooltips for mouse hover
+  ;; if it is not enabled `dap-mode' will use the minibuffer.
+  (tooltip-mode t)
+  (require 'dap-python))
 
 ;; (use-package lsp-mode
 ;;   :defer t
@@ -264,11 +314,6 @@
 ;;   (defadvice lsp-ui-imenu (after hide-lsp-ui-imenu-mode-line activate)
 ;;     (setq mode-line-format nil)))
 
-(use-package company-lsp
-  :pin melpa
-  :ensure t
-  :commands company-lsp)
-
 (use-package highlight-indent-guides
   :ensure t
   :config
@@ -277,19 +322,10 @@
 
 ;; On Linux Emacs doesn't use the shell PATH if it's not started from
 ;; the shell. Let's fix that:
+;; import env vars if you are using macOS.
 (use-package exec-path-from-shell
   :ensure t
   :config (exec-path-from-shell-initialize))
-
-;; ace-window allows to jump between windows with C-x o winnumber
-;; (use-package ace-window
-;;   :ensure t
-;;   :init
-;;   (progn
-;;     (global-set-key [remap other-window] 'ace-window)
-;;     (custom-set-faces
-;;      '(aw-leading-char-face
-;;        ((t (:inherit ace-jump-face-foreground :height 3.0)))))))
 
 (use-package zenburn-theme
   :ensure t
