@@ -120,25 +120,9 @@
   :ensure t
   :config (global-hl-todo-mode t))
 
-;; authentication without user interaction for async if using mail from emacs
-;; (use-package auth-source
-;;   :no-require t
-;;   :config (setq auth-sources '("~/.authinfo.gpg" "~/.netrc")))
-
 ;; allows to easily try new packages installing/uninstall automatically
 (use-package try
   :ensure t)
-
-;; flycheck on the fly checking code
-(use-package flycheck
-  :ensure t
-  :config
-  (global-flycheck-mode t))
-
-(use-package py-autopep8
-  :ensure t
-  :config
-  (add-hook 'python-mode-hook 'py-autopep8-enable-on-save))
 
 ;; undo-tree
 (use-package undo-tree
@@ -205,17 +189,7 @@
 
 (use-package pyvenv
   :ensure t)
-  ;; :hook ((python-mode . pyvenv-mode))
-
-;; (use-package elpy
-;;   :ensure t
-;;   :init (elpy-enable t))
-
-;; (use-package company
-;;   :ensure t
-;;   :config
-;;   (setq company-idle-delay 0)
-;;   (setq company-begin-commands '(self-insert-command)))
+;; :hook ((python-mode . pyvenv-mode))
 
 (use-package highlight-indent-guides
   :ensure t
@@ -228,16 +202,6 @@
 (use-package exec-path-from-shell
   :ensure t
   :config (exec-path-from-shell-initialize))
-
-;; ace-window allows to jump between windows with C-x o winnumber
-;; (use-package ace-window
-;;   :ensure t
-;;   :init
-;;   (progn
-;;     (global-set-key [remap other-window] 'ace-window)
-;;     (custom-set-faces
-;;      '(aw-leading-char-face
-;;        ((t (:inherit ace-jump-face-foreground :height 3.0)))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; setup for anaconda-mode if company/jedi are not preferred ;;
@@ -271,6 +235,17 @@
 (use-package company-anaconda
   :ensure t
   :config (add-to-list 'company-backends 'company-anaconda))
+
+;; flycheck on the fly checking code
+(use-package flycheck
+  :ensure t
+  :config
+  (global-flycheck-mode t))
+
+(use-package py-autopep8
+  :ensure t
+  :config
+  (add-hook 'python-mode-hook 'py-autopep8-enable-on-save))
 
 (use-package zenburn-theme
   :ensure t
