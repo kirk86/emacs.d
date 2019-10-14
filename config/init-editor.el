@@ -39,6 +39,7 @@
 (setq initial-scratch-message nil)
 (setq initial-major-mode 'fundamental-mode)
 
+
 ;; nice scrolling
 (setq scroll-margin 0
       scroll-conservatively 100000
