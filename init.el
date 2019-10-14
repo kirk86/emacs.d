@@ -133,30 +133,30 @@
 ;; setup for company-jedi but seems slow in providing completions ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; company for autocompletion
-;; (use-package company
-;;   :ensure t
-;;   :init (global-company-mode t)
-;;   :config
-;;   (setq company-idle-delay 0)
-;;   (setq company-begin-commands '(self-insert-command)))
+(use-package company
+  :ensure t
+  :init (global-company-mode t)
+  :config
+  (setq company-idle-delay 0)
+  (setq company-begin-commands '(self-insert-command)))
 
-;; ;; use the melpa since melpa-stable apparently has bugs
-;; (use-package jedi-core
-;;   :pin melpa
-;;   :ensure t)
+;; use the melpa since melpa-stable apparently has bugs
+(use-package jedi-core
+  :pin melpa
+  :ensure t)
 
-;; ;; there's an issue with func signatures
-;; ;; needs to add changes manually https://github.com/syohex/emacs-company-jedi/issues/24
-;; ;; requires jedi, virtualenv, and epc installed via pip in your env outside emacs
-;; (use-package company-jedi
-;;   :ensure t
-;;   :init (add-to-list 'company-backends 'company-jedi)
-;;   :config
-;;   (setq jedi:complete-on-dot t)
-;;   (setq jedi:server-args '("--log-level=DEBUG" "--log=/Users/jm/jedi.log" "--log-traceback")))
+;; there's an issue with func signatures
+;; needs to add changes manually https://github.com/syohex/emacs-company-jedi/issues/24
+;; requires jedi, virtualenv, and epc installed via pip in your env outside emacs
+(use-package company-jedi
+  :ensure t
+  :init (add-to-list 'company-backends 'company-jedi)
+  :config
+  (setq jedi:complete-on-dot t)
+  (setq jedi:server-args '("--log-level=DEBUG" "--log=/Users/jm/jedi.log" "--log-traceback")))
 
-;; (use-package python
-;;   :hook ((python-mode . jedi:setup)))
+(use-package python
+  :hook ((python-mode . jedi:setup)))
 
 ;; flycheck on the fly checking code
 (use-package flycheck
@@ -239,73 +239,6 @@
 ;; (use-package elpy
 ;;   :ensure t
 ;;   :init (elpy-enable t))
-
-(use-package lsp-mode
-  :pin melpa
-  :ensure t
-  :hook (prog-mode . lsp)
-  :commands lsp
-  :config (setq lsp-log-io t))
-
-(use-package lsp-ui
-  :pin melpa
-  :ensure t
-  :commands lsp-ui-mode)
-
-;; (use-package lsp-mode
-;;   :defer t
-;;   :commands lsp
-;;   :custom
-;;   (lsp-auto-guess-root t)
-;;   (lsp-enable-snippet nil)
-;;   (lsp-prefer-flymake nil) ; Use flycheck instead of flymake
-;;   :bind (:map lsp-mode-map ("C-c C-f" . lsp-format-buffer))
-;;   :hook ((python-mode c-mode c++-mode) . lsp)
-;;   :config
-;;   (setq lsp-prefer-flymake nil) ;; Prefer using lsp-ui (flycheck) over flymake.
-;;   (setq lsp-log-io t)
-;;   )
-;; ;; :config (setq lsp-clients-clangd-args '("-j=4" "-background-index" "-log=error"))
-
-;; (use-package lsp-ui
-;;   :requires lsp-mode flycheck
-;;   :commands lsp-ui-mode
-;;   :custom-face
-;;   (lsp-ui-doc-background ((t (:background nil))))
-;;   (lsp-ui-doc-header ((t (:inherit (font-lock-string-face italic)))))
-;;   :bind (:map lsp-ui-mode-map
-;;               ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
-;;               ([remap xref-find-references] . lsp-ui-peek-find-references)
-;;               ("C-c u" . lsp-ui-imenu))
-;;   :hook (lsp-mode-hook . lsp-ui-mode)
-;;   :custom
-;;   (lsp-ui-doc-enable t)
-;;   (lsp-ui-doc-use-childframe t)
-;;   (lsp-ui-flycheck-enable t)
-;;   (lsp-ui-flycheck-list-position 'right)
-;;   (lsp-ui-flycheck-live-reporting t)
-;;   (lsp-ui-peek-enable t)
-;;   (lsp-ui-peek-list-width 60)
-;;   (lsp-ui-peek-peek-height 25)
-;;   (lsp-ui-doc-header t)
-;;   (lsp-ui-doc-include-signature t)
-;;   (lsp-ui-doc-position 'top)
-;;   (lsp-ui-doc-border (face-foreground 'default))
-;;   (lsp-ui-sideline-enable t)
-;;   (lsp-ui-sideline-ignore-duplicate t)
-;;   (lsp-ui-sideline-show-code-actions t)
-;;   :config
-;;   ;; Use lsp-ui-doc-webkit only in GUI
-;;   (setq lsp-ui-doc-use-webkit nil)
-;;   ;; WORKAROUND Hide mode-line of the lsp-ui-imenu buffer
-;;   ;; emacs-lsp/lsp-ui#243
-;;   (defadvice lsp-ui-imenu (after hide-lsp-ui-imenu-mode-line activate)
-;;     (setq mode-line-format nil)))
-
-(use-package company-lsp
-  :pin melpa
-  :ensure t
-  :commands company-lsp)
 
 ;; (use-package company
 ;;   :ensure t
