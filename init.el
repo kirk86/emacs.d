@@ -129,34 +129,17 @@
 (use-package try
   :ensure t)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; setup for company-jedi but seems slow in providing completions ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; company for autocompletion
-;; (use-package company
-;;   :ensure t
-;;   :init (global-company-mode t)
-;;   :config
-;;   (setq company-idle-delay 0)
-;;   (setq company-begin-commands '(self-insert-command)))
+(use-package auto-complete
+  :ensure t
+  :config
+  (ac-config-default)
+  (global-auto-complete-mode t))
 
-;; ;; use the melpa since melpa-stable apparently has bugs
-;; (use-package jedi-core
-;;   :pin melpa
-;;   :ensure t)
-
-;; ;; there's an issue with func signatures
-;; ;; needs to add changes manually https://github.com/syohex/emacs-company-jedi/issues/24
-;; ;; requires jedi, virtualenv, and epc installed via pip in your env outside emacs
-;; (use-package company-jedi
-;;   :ensure t
-;;   :init (add-to-list 'company-backends 'company-jedi)
-;;   :config
-;;   (setq jedi:complete-on-dot t)
-;;   (setq jedi:server-args '("--log-level=DEBUG" "--log=/Users/jm/jedi.log" "--log-traceback")))
-
-;; (use-package python
-;;   :hook ((python-mode . jedi:setup)))
+(use-package jedi
+  :ensure t
+  :init
+  (add-hook 'python-mode-hook 'jedi:setup)
+  (add-hook 'python-mode-hook 'jedi:ac-setup))
 
 ;; flycheck on the fly checking code
 (use-package flycheck
@@ -236,83 +219,6 @@
   :ensure t)
   ;; :hook ((python-mode . pyvenv-mode))
 
-;; (use-package elpy
-;;   :ensure t
-;;   :init (elpy-enable t))
-
-(use-package lsp-mode
-  :pin melpa
-  :ensure t
-  :hook (prog-mode . lsp)
-  :commands lsp
-  :config (setq lsp-log-io t))
-
-(use-package lsp-ui
-  :pin melpa
-  :ensure t
-  :commands lsp-ui-mode)
-
-;; (use-package lsp-mode
-;;   :defer t
-;;   :commands lsp
-;;   :custom
-;;   (lsp-auto-guess-root t)
-;;   (lsp-enable-snippet nil)
-;;   (lsp-prefer-flymake nil) ; Use flycheck instead of flymake
-;;   :bind (:map lsp-mode-map ("C-c C-f" . lsp-format-buffer))
-;;   :hook ((python-mode c-mode c++-mode) . lsp)
-;;   :config
-;;   (setq lsp-prefer-flymake nil) ;; Prefer using lsp-ui (flycheck) over flymake.
-;;   (setq lsp-log-io t)
-;;   )
-;; ;; :config (setq lsp-clients-clangd-args '("-j=4" "-background-index" "-log=error"))
-
-;; (use-package lsp-ui
-;;   :requires lsp-mode flycheck
-;;   :commands lsp-ui-mode
-;;   :custom-face
-;;   (lsp-ui-doc-background ((t (:background nil))))
-;;   (lsp-ui-doc-header ((t (:inherit (font-lock-string-face italic)))))
-;;   :bind (:map lsp-ui-mode-map
-;;               ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
-;;               ([remap xref-find-references] . lsp-ui-peek-find-references)
-;;               ("C-c u" . lsp-ui-imenu))
-;;   :hook (lsp-mode-hook . lsp-ui-mode)
-;;   :custom
-;;   (lsp-ui-doc-enable t)
-;;   (lsp-ui-doc-use-childframe t)
-;;   (lsp-ui-flycheck-enable t)
-;;   (lsp-ui-flycheck-list-position 'right)
-;;   (lsp-ui-flycheck-live-reporting t)
-;;   (lsp-ui-peek-enable t)
-;;   (lsp-ui-peek-list-width 60)
-;;   (lsp-ui-peek-peek-height 25)
-;;   (lsp-ui-doc-header t)
-;;   (lsp-ui-doc-include-signature t)
-;;   (lsp-ui-doc-position 'top)
-;;   (lsp-ui-doc-border (face-foreground 'default))
-;;   (lsp-ui-sideline-enable t)
-;;   (lsp-ui-sideline-ignore-duplicate t)
-;;   (lsp-ui-sideline-show-code-actions t)
-;;   :config
-;;   ;; Use lsp-ui-doc-webkit only in GUI
-;;   (setq lsp-ui-doc-use-webkit nil)
-;;   ;; WORKAROUND Hide mode-line of the lsp-ui-imenu buffer
-;;   ;; emacs-lsp/lsp-ui#243
-;;   (defadvice lsp-ui-imenu (after hide-lsp-ui-imenu-mode-line activate)
-;;     (setq mode-line-format nil)))
-
-(use-package company-lsp
-  :pin melpa
-  :ensure t
-  :commands company-lsp)
-
-;; (use-package company
-;;   :ensure t
-;;   :config
-;;   (setq company-idle-delay 0)
-;;   (setq company-begin-commands '(self-insert-command)))
-
 (use-package highlight-indent-guides
   :ensure t
   :config
@@ -324,49 +230,6 @@
 (use-package exec-path-from-shell
   :ensure t
   :config (exec-path-from-shell-initialize))
-
-;; ace-window allows to jump between windows with C-x o winnumber
-;; (use-package ace-window
-;;   :ensure t
-;;   :init
-;;   (progn
-;;     (global-set-key [remap other-window] 'ace-window)
-;;     (custom-set-faces
-;;      '(aw-leading-char-face
-;;        ((t (:inherit ace-jump-face-foreground :height 3.0)))))))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; setup for anaconda-mode if company/jedi are not preferred ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; (use-package company
-;;   :defer t
-;;   :bind (:map company-active-map
-;;               ("RET"     . company-complete-selection)
-;;               ([return]  . company-complete-selection)
-;;               ("TAB"     . company-select-next)
-;;               ([tab]     . company-select-next)
-;;               ("S-TAB"   . company-select-previous)
-;;               ([backtab] . company-select-previous)
-;;               ("C-j"     . company-complete-selection))
-;;   :config
-;;   (setq company-idle-delay 0)
-;;   (setq company-tooltip-limit 10)
-;;   (setq company-minimum-prefix-length 1)
-;;   ;; Aligns annotation to the right hand side
-;;   ;; (setq company-tooltip-align-annotations t)
-;;   (setq company-begin-commands '(self-insert-command))
-;;   (global-company-mode t))
-
-;; (use-package anaconda-mode
-;;   :ensure t
-;;   :bind (:map anaconda-mode-map
-;;                 ("M-," . anaconda-mode-find-assignments))
-;;   :hook ((python-mode . anaconda-mode)
-;;          (python-mode . anaconda-eldoc-mode)))
-
-;; (use-package company-anaconda
-;;   :ensure t
-;;   :config (add-to-list 'company-backends 'company-anaconda))
 
 (use-package zenburn-theme
   :ensure t
