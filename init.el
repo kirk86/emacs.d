@@ -129,35 +129,6 @@
 (use-package try
   :ensure t)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; setup for company-jedi but seems slow in providing completions ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; company for autocompletion
-(use-package company
-  :ensure t
-  :init (global-company-mode t)
-  :config
-  (setq company-idle-delay 0)
-  (setq company-begin-commands '(self-insert-command)))
-
-;; use the melpa since melpa-stable apparently has bugs
-(use-package jedi-core
-  :pin melpa
-  :ensure t)
-
-;; there's an issue with func signatures
-;; needs to add changes manually https://github.com/syohex/emacs-company-jedi/issues/24
-;; requires jedi, virtualenv, and epc installed via pip in your env outside emacs
-(use-package company-jedi
-  :ensure t
-  :init (add-to-list 'company-backends 'company-jedi)
-  :config
-  (setq jedi:complete-on-dot t)
-  (setq jedi:server-args '("--log-level=DEBUG" "--log=/Users/jm/jedi.log" "--log-traceback")))
-
-(use-package python
-  :hook ((python-mode . jedi:setup)))
-
 ;; flycheck on the fly checking code
 (use-package flycheck
   :ensure t
@@ -271,35 +242,35 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; setup for anaconda-mode if company/jedi are not preferred ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; (use-package company
-;;   :defer t
-;;   :bind (:map company-active-map
-;;               ("RET"     . company-complete-selection)
-;;               ([return]  . company-complete-selection)
-;;               ("TAB"     . company-select-next)
-;;               ([tab]     . company-select-next)
-;;               ("S-TAB"   . company-select-previous)
-;;               ([backtab] . company-select-previous)
-;;               ("C-j"     . company-complete-selection))
-;;   :config
-;;   (setq company-idle-delay 0)
-;;   (setq company-tooltip-limit 10)
-;;   (setq company-minimum-prefix-length 1)
-;;   ;; Aligns annotation to the right hand side
-;;   ;; (setq company-tooltip-align-annotations t)
-;;   (setq company-begin-commands '(self-insert-command))
-;;   (global-company-mode t))
+(use-package company
+  :defer t
+  :bind (:map company-active-map
+              ("RET"     . company-complete-selection)
+              ([return]  . company-complete-selection)
+              ("TAB"     . company-select-next)
+              ([tab]     . company-select-next)
+              ("S-TAB"   . company-select-previous)
+              ([backtab] . company-select-previous)
+              ("C-j"     . company-complete-selection))
+  :config
+  (setq company-idle-delay 0)
+  (setq company-tooltip-limit 10)
+  (setq company-minimum-prefix-length 1)
+  ;; Aligns annotation to the right hand side
+  ;; (setq company-tooltip-align-annotations t)
+  (setq company-begin-commands '(self-insert-command))
+  (global-company-mode t))
 
-;; (use-package anaconda-mode
-;;   :ensure t
-;;   :bind (:map anaconda-mode-map
-;;                 ("M-," . anaconda-mode-find-assignments))
-;;   :hook ((python-mode . anaconda-mode)
-;;          (python-mode . anaconda-eldoc-mode)))
+(use-package anaconda-mode
+  :ensure t
+  :bind (:map anaconda-mode-map
+                ("M-," . anaconda-mode-find-assignments))
+  :hook ((python-mode . anaconda-mode)
+         (python-mode . anaconda-eldoc-mode)))
 
-;; (use-package company-anaconda
-;;   :ensure t
-;;   :config (add-to-list 'company-backends 'company-anaconda))
+(use-package company-anaconda
+  :ensure t
+  :config (add-to-list 'company-backends 'company-anaconda))
 
 (use-package zenburn-theme
   :ensure t
