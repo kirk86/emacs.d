@@ -226,7 +226,7 @@
   :hook (prog-mode . lsp)
   :commands lsp
   :config
-  (lsp-prefer-flymake nil) ; Use flycheck instead of flymake
+  (setq lsp-prefer-flymake nil) ; Use flycheck instead of flymake
   (setq lsp-log-io t))
 
 ;; ui interface to lsp for better completions and documentation
@@ -256,16 +256,17 @@
                    (lsp))))  ; or lsp-deferred
 
 ;; debugger adapter protocol for many languages
+;; don't forget to install ptvsd on your python venv environment
 (use-package dap-mode
   :ensure t
   :config
-  (dap-mode t)
-  (dap-ui-mode t)
+  (setq dap-mode t)
+  (setq dap-ui-mode t)
   ;; enables mouse hover support
-  (dap-tooltip-mode t)
+  (setq dap-tooltip-mode t)
   ;; use tooltips for mouse hover
   ;; if it is not enabled `dap-mode' will use the minibuffer.
-  (tooltip-mode t)
+  (setq tooltip-mode t)
   (require 'dap-python))
 
 ;; (use-package lsp-mode
