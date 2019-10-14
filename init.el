@@ -147,10 +147,18 @@
   :config
   (global-flycheck-mode t))
 
+;; formatting code according to autopep8
 (use-package py-autopep8
   :ensure t
   :config
   (add-hook 'python-mode-hook 'py-autopep8-enable-on-save))
+
+;; sorting imports according to length
+(use-package py-isort
+  :ensure t
+  :config
+  (add-hook 'before-save-hook 'py-isort-before-save)
+  (setq py-isort-options '("--length-sort")))
 
 ;; undo-tree
 (use-package undo-tree
