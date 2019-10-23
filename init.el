@@ -146,14 +146,10 @@
 ;; undo-tree
 (use-package undo-tree
   :ensure t
-  ;; :defines undo-tree-visualizer-selection-mode
   :config
-  (defvar undo-tree-mode)
-  (defvar undo-tree-visualizer-selection-node)
   (global-undo-tree-mode t))
-  ;; (diminish 'undo-tree-mode)))  ;; sensible undo-tree
 
-;; deletes all the whitespace when you hit backspace or delete
+;; ;; deletes all the whitespace when you hit backspace or delete
 (use-package hungry-delete
   :ensure t
   :config
@@ -167,32 +163,44 @@
   :bind ("C-c C-p" . mc/mark-previous-like-this)
   :bind ("C-c a" . mc/mark-all-like-this))
 
-;; expand region to select text like vim when using vi-()
+;; ;; expand region to select text like vim when using vi-()
 (use-package expand-region
   :ensure t
   :config
   (global-set-key (kbd "C-c r") 'er/expand-region))
 
 (use-package magit
+  :pin melpa
   :ensure t
-  :bind ("C-x g" . magit-status))
+  :bind
+  ("C-x g" . magit-status)
+  ("C-c M-g" . global-magit-file-mode)) ; C-x M-g magit dipatcher
 
 ;; LaTeX
 (use-package tex
-  :defines TeX-test-compilation-log
-  :functions AUCTeX-set-ert-path
-  :ensure auctex)
+  :init
+  (add-to-list 'auto-mode-alist '("\\.tex$" . latex-mode))
+  :hook ((LaTeX-mode-hook . reftex-mode)) ; with AUCTex LaTeX mode
+  :hook ((latex-mode-hook . reftex-mode)) ; with Emacs latex mode
+  :ensure auctex
+  :config
+  (setq TeX-auto-save t)
+  (setq TeX-parse-self t)
+  (setq TeX-close-quote "")
+  (setq TeX-open-quote "")
+  (setq-default TeX-master nil)
+  (setq reftex-plug-into-AUCTeX t))
 
-;; (defun tex-view ()
-;;   (interactive)
-;;   (tex-send-command "evince" (tex-append tex-print-file ".pdf")))
+;; ;; (defun tex-view ()
+;; ;;   (interactive)
+;; ;;   (tex-send-command "evince" (tex-append tex-print-file ".pdf")))
 
 (use-package projectile
   :ensure t
+  :bind ("C-c p" . projectile-command-map)
   :config
   (projectile-mode t)
-  (setq projectile-cache-file (expand-file-name  "projectile.cache" savefile-dir))
-  :bind ("C-c p" . projectile-command-map))
+  (setq projectile-cache-file (expand-file-name  "projectile.cache" savefile-dir)))
 
 (use-package yasnippet
   :ensure t
@@ -208,9 +216,8 @@
 
 (use-package pyvenv
   :ensure t)
-  ;; :hook ((python-mode . pyvenv-mode))
 
-;; complete any, autocompletion package
+;; ;; complete any, autocompletion package
 (use-package company
   :ensure t
   :config
@@ -219,7 +226,7 @@
   ;; (global-set-key (kbd "C-<tab>") 'company-complete)
   )
 
-;; language server protocol for autocompletion, linting and documentation
+;; ;; language server protocol for autocompletion, linting and documentation
 (use-package lsp-mode
   :pin melpa
   :ensure t
@@ -227,13 +234,32 @@
   :commands lsp
   :config
   (setq lsp-prefer-flymake nil) ; Use flycheck instead of flymake
-  (setq lsp-log-io t))
+  (setq lsp-log-io t)
+  ;; (setq lsp-clients-clangd-args '("-j=4" "-background-index" "-log=error"))
+  )
 
 ;; ui interface to lsp for better completions and documentation
 (use-package lsp-ui
   :pin melpa
   :ensure t
-  :commands lsp-ui-mode)
+  :commands lsp-ui-mode
+  ;; :config
+  ;; (setq lsp-ui-doc-enable t)
+  ;; (lsp-ui-doc-use-childframe t)
+  ;; (setq lsp-ui-flycheck-enable t)
+  ;; (lsp-ui-flycheck-list-position 'right)
+  ;; (setq lsp-ui-flycheck-live-reporting t)
+  ;; (setq lsp-ui-peek-enable t)
+  ;; (lsp-ui-peek-list-width 60)
+  ;; (lsp-ui-peek-peek-height 25)
+  ;; (setq lsp-ui-doc-header t)
+  ;; (setq lsp-ui-doc-include-signature t)
+  ;; (lsp-ui-doc-position 'top)
+  ;; (lsp-ui-doc-border (face-foreground 'default))
+  ;; (setq lsp-ui-sideline-enable t)
+  ;; (setq lsp-ui-sideline-ignore-duplicate t)
+  ;; (setq lsp-ui-sideline-show-code-actions t)
+  )
 
 ;; package providing completions for lsp through company
 (use-package company-lsp
@@ -269,58 +295,44 @@
   (setq tooltip-mode t)
   (require 'dap-python))
 
-;; (use-package lsp-mode
-;;   :defer t
-;;   :commands lsp
-;;   :custom
-;;   (lsp-auto-guess-root t)
-;;   (lsp-enable-snippet nil)
-;;   (lsp-prefer-flymake nil) ; Use flycheck instead of flymake
-;;   :bind (:map lsp-mode-map ("C-c C-f" . lsp-format-buffer))
-;;   :hook ((python-mode c-mode c++-mode) . lsp)
-;;   :config
-;;   (setq lsp-prefer-flymake nil) ;; Prefer using lsp-ui (flycheck) over flymake.
-;;   (setq lsp-log-io t)
-;;   )
-;; ;; :config (setq lsp-clients-clangd-args '("-j=4" "-background-index" "-log=error"))
-
-;; (use-package lsp-ui
-;;   :requires lsp-mode flycheck
-;;   :commands lsp-ui-mode
-;;   :custom-face
-;;   (lsp-ui-doc-background ((t (:background nil))))
-;;   (lsp-ui-doc-header ((t (:inherit (font-lock-string-face italic)))))
-;;   :bind (:map lsp-ui-mode-map
-;;               ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
-;;               ([remap xref-find-references] . lsp-ui-peek-find-references)
-;;               ("C-c u" . lsp-ui-imenu))
-;;   :hook (lsp-mode-hook . lsp-ui-mode)
-;;   :custom
-;;   (lsp-ui-doc-enable t)
-;;   (lsp-ui-doc-use-childframe t)
-;;   (lsp-ui-flycheck-enable t)
-;;   (lsp-ui-flycheck-list-position 'right)
-;;   (lsp-ui-flycheck-live-reporting t)
-;;   (lsp-ui-peek-enable t)
-;;   (lsp-ui-peek-list-width 60)
-;;   (lsp-ui-peek-peek-height 25)
-;;   (lsp-ui-doc-header t)
-;;   (lsp-ui-doc-include-signature t)
-;;   (lsp-ui-doc-position 'top)
-;;   (lsp-ui-doc-border (face-foreground 'default))
-;;   (lsp-ui-sideline-enable t)
-;;   (lsp-ui-sideline-ignore-duplicate t)
-;;   (lsp-ui-sideline-show-code-actions t)
-;;   :config
-;;   ;; Use lsp-ui-doc-webkit only in GUI
-;;   (setq lsp-ui-doc-use-webkit nil)
-;;   ;; WORKAROUND Hide mode-line of the lsp-ui-imenu buffer
-;;   ;; emacs-lsp/lsp-ui#243
-;;   (defadvice lsp-ui-imenu (after hide-lsp-ui-imenu-mode-line activate)
-;;     (setq mode-line-format nil)))
+;; ;; (use-package lsp-ui
+;; ;;   :requires lsp-mode flycheck
+;; ;;   :commands lsp-ui-mode
+;; ;;   :custom-face
+;; ;;   (lsp-ui-doc-background ((t (:background nil))))
+;; ;;   (lsp-ui-doc-header ((t (:inherit (font-lock-string-face italic)))))
+;; ;;   :bind (:map lsp-ui-mode-map
+;; ;;               ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
+;; ;;               ([remap xref-find-references] . lsp-ui-peek-find-references)
+;; ;;               ("C-c u" . lsp-ui-imenu))
+;; ;;   :hook (lsp-mode-hook . lsp-ui-mode)
+;; ;;   :custom
+;; ;;   (lsp-ui-doc-enable t)
+;; ;;   (lsp-ui-doc-use-childframe t)
+;; ;;   (lsp-ui-flycheck-enable t)
+;; ;;   (lsp-ui-flycheck-list-position 'right)
+;; ;;   (lsp-ui-flycheck-live-reporting t)
+;; ;;   (lsp-ui-peek-enable t)
+;; ;;   (lsp-ui-peek-list-width 60)
+;; ;;   (lsp-ui-peek-peek-height 25)
+;; ;;   (lsp-ui-doc-header t)
+;; ;;   (lsp-ui-doc-include-signature t)
+;; ;;   (lsp-ui-doc-position 'top)
+;; ;;   (lsp-ui-doc-border (face-foreground 'default))
+;; ;;   (lsp-ui-sideline-enable t)
+;; ;;   (lsp-ui-sideline-ignore-duplicate t)
+;; ;;   (lsp-ui-sideline-show-code-actions t)
+;; ;;   :config
+;; ;;   ;; Use lsp-ui-doc-webkit only in GUI
+;; ;;   (setq lsp-ui-doc-use-webkit nil)
+;; ;;   ;; WORKAROUND Hide mode-line of the lsp-ui-imenu buffer
+;; ;;   ;; emacs-lsp/lsp-ui#243
+;; ;;   (defadvice lsp-ui-imenu (after hide-lsp-ui-imenu-mode-line activate)
+;; ;;     (setq mode-line-format nil)))
 
 (use-package highlight-indent-guides
-  :ensure t
+  :defines highlight-indent-guides-mode
+  :commands highlight-indent-guides-mode
   :config
   (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
   (setq highlight-indent-guides-method 'column))
@@ -344,6 +356,7 @@
   (setq fci-rule-color "orange")
   (add-hook 'prog-mode-hook 'fci-mode)
   (add-hook 'text-mode-hook 'fci-mode))
+
 ;; Patch security vulnerability in Emacs versions older than 25.3
 (when (version< emacs-version "25.3")
   (with-eval-after-load "enriched"

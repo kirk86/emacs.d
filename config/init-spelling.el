@@ -24,5 +24,5 @@
               (when (cl-find-if #'derived-mode-p dotemacs-spelling/major-modes)
                 (turn-on-flyspell)))))
 
-(provide 'config-spelling)
+(provide 'init-spelling)
 ;;; init-spelling.el ends here

@@ -20,7 +20,9 @@
 (when (fboundp 'tool-bar-mode)
   (tool-bar-mode -1))
 
-(menu-bar-mode -1)
+(when (fboundp 'menu-bar-mode)
+  (menu-bar-mode -1))
+
 ;; (scroll-bar-mode -1)
 
 ;; the blinking cursor is nothing, but an annoyance
@@ -34,7 +36,7 @@
 (setq inhibit-startup-screen t)
 (setq inhibit-startup-echo-area-message t)
 
-;; customize scratch buffer
+;; customize the scratch buffer
 ;; turn off default message screens with emacs tutorial
 (setq initial-scratch-message nil)
 (setq initial-major-mode 'fundamental-mode)
@@ -401,9 +403,9 @@ and file 'filename' will be opened and cursor set on line 'linenumber'"
 ;; Enable line numbers
 ;;(linum-mode)  ;; enables only for current buffer
 (when (version<= "25" emacs-version)
-  (add-hook 'prog-mode-hook 'linum-mode)
-  (add-hook 'text-mode-hook 'linum-mode))
-  ;;(global-linum-mode t))
+  ;; (add-hook 'prog-mode-hook 'linum-mode)
+  ;; (add-hook 'text-mode-hook 'linum-mode))
+  (global-linum-mode t))
 
 ;; Add solid line after line number
 (setq linum-format "%4d \u2502 ")
