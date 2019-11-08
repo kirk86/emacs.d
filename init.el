@@ -210,8 +210,8 @@
   (declare-function my-latex-mode-hook "init.el")
   :hook ((LaTeX-mode latex-mode) . my-latex-mode-hook)
   :custom
-  (TeX-auto-save t)
-  (TeX-parse-self t)
+  (TeX-auto-save t)  ; enable parse on load
+  (TeX-parse-self t)  ; enable parse on save
   (reftex-plug-into-AUCTeX t)
   (latex-run-command "pdflatex")
   (TeX-source-correlate-method 'synctex)
