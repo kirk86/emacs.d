@@ -12,7 +12,7 @@
 
 (defvar current-user
   (getenv
-   (if (equal system-type 'windows-nt) "USERNAME" "USER")))
+   (if (eq system-type 'windows-nt) "USERNAME" "USER")))
 
 ;; setup directories
 (defvar emacs-dir (file-name-directory load-file-name)
@@ -98,6 +98,13 @@
   (auto-package-update-hide-results t)
   :config
   (auto-package-update-maybe))
+
+;; remove warnings about deprecated cl library on load
+(setq byte-compile-warnings '(cl-functions))
+
+;; show history of file dependency on cl
+;; (require 'loadhist)
+;; (file-dependents (feature-file 'cl))
 
 ;; (use-package auto-package-update
 ;;   :custom
@@ -201,6 +208,18 @@
   :ensure t
   :bind ("C-x g" . magit-status))
 
+(use-package markdown-mode
+  :ensure t
+  :mode (("README\\.md\\'" . gfm-mode)
+         ("\\.md\\'" . markdown-mode)
+         ("\\.markdown\\'" . markdown-mode))
+  :init (setq markdown-command "/Users/jm/miniconda3/envs/tf/bin/pandoc"))
+
+;; (concat
+;;  "/usr/local/bin/pandoc"
+;;  " --from=markdown --to=html"
+;;  " --standalone --mathjax --highlight-style=pygments"))
+
 ;; LaTeX
 (use-package tex
   :ensure auctex
@@ -214,12 +233,21 @@
   (TeX-parse-self t)  ; enable parse on save
   (reftex-plug-into-AUCTeX t)
   (latex-run-command "pdflatex")
+  (TeX-source-correlate-start-server t)
   (TeX-source-correlate-method 'synctex)
   (global-visual-line-mode t)
+  (TeX-view-program-list
+        '(("Okular" "okular --unique %o#src:%n`pwd`/./%b")
+          ("Skim" "displayline -b -g %n %o %b")
+          ("Zathura"
+           ("zathura %o"
+            (mode-io-correlate
+             " --synctex-forward %n:0:%b -x \"emacsclient +%{line} %{input}\"")))))
+  ;; (TeX-view-program-list '(("Skim" "displayline -b -g %n %o %b")))
   ;; ;; to use pdfview with auctex
-  (TeX-view-program-selection '((output-pdf "Skim"))
-                              TeX-source-correlate-start-server t)
+  ;; (TeX-view-program-selection '((output-pdf "PDF Viewer")))
   ;; (TeX-view-program-list '(("pdf-tools" "TeX-pdf-tools-sync-view")))
+  ;; (TeX-view-program-list '(("pdf-tools" "/Applications/Skim.app/Contents/SharedSupport/displayline -b -g %n %o %b")))
   ;; (TeX-after-compilation-finished-functions #'TeX-revert-document-buffer)
   ;; :hook (((LaTeX-mode latex-mode) . LaTeX-math-mode)
   ;;        ((LaTeX-mode latex-mode) . flyspell-mode)
@@ -229,6 +257,20 @@
   :config
   (setq TeX-outline-extra '(("[ \t]*\\\\\\(bib\\)?item\\b" 7)
                             ("\\\\bibliography\\b" 2))) ; adding own headings to outline minor mode
+  ;; Use Skim as viewer, enable source <-> PDF sync
+  ;; make latexmk available via C-c C-c
+  ;; Note: SyncTeX is setup via ~/.latexmkrc (see below)
+  ;; (add-hook 'LaTeX-mode-hook (lambda ()
+  ;;                              (push
+  ;;                               '("latexmk" "latexmk -pdf %s" TeX-run-TeX nil t
+  ;;                                 :help "Run latexmk on file")
+  ;;                               TeX-command-list)))
+  ;; (add-hook 'TeX-mode-hook '(lambda () (setq TeX-command-default "latexmk")))
+  (when (eq system-type 'darwin)
+    (setq TeX-view-program-selection '((output-pdf "Skim"))))
+  ;; For linux, use Okular or perhaps Zathura.
+  (when (eq system-type 'windows-nt)
+    (setq TeX-view-program-selection '((output-pdf "Okular"))))
 
   (defun my-latex-mode-hook ()
     (LaTeX-math-mode)
@@ -239,7 +281,12 @@
     (outline-minor-mode)
     ;; (setq TeX-master (my-guess-TeX-master (buffer-file-name)))
     )
-  )
+  (eval-after-load "tex"
+    '(add-to-list 'TeX-command-list
+                  '("All" "latexmk -pdf %t" TeX-run-TeX nil
+                    (latex-mode doctex-mode)
+                    :help "Run latexmk")))
+)
 
 ;; (defun tex-view ()
 ;;   (interactive)
@@ -252,7 +299,7 @@
                 reftex-save-parse-info t
                 reftex-use-multiple-selection-buffers t
                 reftex-plug-into-AUCTeX t
-
+                reftex-cite-format 'natbib
                 reftex-cite-prompt-optional-args nil
                 reftex-cite-cleanup-optional-args t
 
@@ -274,7 +321,7 @@
                 reftex-revisit-to-follow t
                 reftex-use-fonts t              ; make colorful toc
                 reftex-toc-follow-mode nil      ; don't follow other toc(s)
-                reftex-toc-split-windows-horizontally t
+                reftex-toc-split-windows-orizontally t
                 reftex-auto-recenter-toc t
                 reftex-enable-partial-scans t
                 reftex-save-parse-info t
